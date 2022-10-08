@@ -32,6 +32,20 @@ def convert(message):
             raise ConvertionException('Не верное кол-во параметров')
 
         quote, base, amount = values
+
+        if quote not in keys.keys():
+            for _ in keys.keys():
+                if quote[0:3] == _[0:3] or quote[0] == _[0] and quote[-1] == _[-1]:
+                    quote = _
+            bot.reply_to(message, f'Не верный ввод данных возможно вы имели ввиду {quote}')
+
+
+        if base not in keys.keys():
+            for _ in keys.keys():
+                if base[0:3] == _[0:3] or base[0] == _[0] and base[-1] == _[-1]:
+                    base = _
+            bot.reply_to(message, f'Не верный ввод данных возможно вы имели ввиду {base}')
+
         total_price = CryptoConverter.convert(quote, base, amount)
     except ConvertionException as e:
         bot.reply_to(message, f'Ошибка пользователя\n{e}')
